@@ -1,0 +1,37 @@
+{
+    "editor.tabCompletion": "on",
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "**/.retool_types/**": true,
+        ".cache": true,
+        "retool.config.json": true,
+        "renovate.json": true
+    },
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 0,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": "explicit",
+        "source.organizeImports": "explicit",
+        "source.addMissingImports.ts": "explicit"
+    },
+    "editor.formatOnSave": true,
+    "breadcrumbs.enabled": true,
+    "editor.quickSuggestions": {
+        "other": true,
+        "comments": true,
+        "strings": true,
+    },
+    "hide-files.files": [
+        "yarn.lock"
+    ],
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
+    "editor.formatOnPaste": false,
+    "editor.formatOnType": false,
+    "editor.formatOnSaveMode": "file",
+    "vs-code-prettier-eslint.prettierLast": true
+}
