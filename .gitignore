@@ -1,5 +1,73 @@
-node_modules
-dist
-.eslintrc
-.prettierrc
+# Coda Platform
+
+.coda.json
+.coda-credentials.json
+.coda
+
+# Dependency directories should not be committed
+
+node_modules/
+bower_components/
+jspm_packages/
+web_modules/
+
+# Build & Output
+
+dist/
+build/
+out/
+coverage/
+.nyc_output/
+artifacts/
+_upload_build/
+*.tsbuildinfo
+.pnpm_install/
+
+# Logs
+
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Environment Variables
+
+.env
+.env.local
+.env.*.local
+.npmrc
+
+# OS & Editor Specific
+
 .DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.suo
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+
+# Framework & Tool Cache
+
+.cache/
+.eslintcache
+.prettiercache
+.parcel-cache
+.next/
+.nuxt/
+.docusaurus/
+.vuepress/
+.serverless/
+.fusebox/
+.turbo/
+
+# Lockfiles
+
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
