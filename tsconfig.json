@@ -1,63 +1,23 @@
 {
-  "name": "packs-starter",
-  "description": "A starter project template for creating a Coda Pack.",
-  "main": "index.ts",
-  "scripts": {
-    "postinstall": "npx patch-package",
-    "test": "mocha --require ts-node/register test/*.ts",
-    "lint": "eslint src/**/*.ts",
-    "format": "prettier --write src/**/*.ts",
-    "generate": "ts-node scripts/coda-generator.ts",
-    "build": "npm run generate && tsc",
-    "validate": "coda validate src/pack.ts",
-    "upload": "coda upload src/pack.ts"
-  },
-  "author": "",
-  "license": "MIT",
-  "dependencies": {
-    "@codahq/packs-sdk": "^1.8.3",
-    "axios": "^1.6.7",
-    "openapi-typescript": "^7.4.3",
-    "ts-morph": "^24.0.0"
-  },
-  "devDependencies": {
-    "@types/chai": "^4.3.12",
-    "@types/chai-as-promised": "^7.1.7",
-    "@types/content-disposition": "^0.5.8",
-    "@types/jest": "^29.5.12",
-    "@types/jsrsasign": "^10.5.12",
-    "@types/luxon": "^3.4.2",
-    "@types/mime-types": "^2.1.3",
-    "@types/mocha": "^10.0.6",
-    "@types/node": "^18.19.18",
-    "@types/sinon": "^10.0.20",
-    "@typescript-eslint/eslint-plugin": "^5.62.0",
-    "@typescript-eslint/experimental-utils": "^5.62.0",
-    "@typescript-eslint/parser": "^5.62.0",
-    "chai": "4.3.12",
-    "chai-as-promised": "7.1.8",
-    "eslint": "^8.57.0",
-    "eslint-plugin-ban": "^1.6.0",
-    "eslint-plugin-filenames": "^1.3.2",
-    "eslint-plugin-local": "^1.0.0",
-    "eslint-plugin-prefer-let": "^3.0.1",
-    "eslint-plugin-prettier": "^5.1.3",
-    "mocha": "10.0.6",
-    "node": "20.11.25",
-    "openapi-typescript-codegen": "^0.29.0",
-    "patch-package": "8.0.0",
-    "prettier": "^3.2.5",
-    "sinon": "17.0.3",
-    "ts-node": "10.9.2",
-    "typescript": "^5.7.2"
-  },
-  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
   "compilerOptions": {
-    "lib": [
-      "es2015"
-    ],
-    "forceConsistentCasingInFileNames": true,
+    "target": "ES6",
     "module": "commonjs",
-    "target": "es2015"
-  }
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "types": [
+      "node",
+      "mocha"
+    ]
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ]
 }
