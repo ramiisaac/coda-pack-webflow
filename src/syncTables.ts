@@ -9,11 +9,12 @@ import { setupOrderDetails } from './orderDetails';
 import { setupPages } from './pages';
 import { setupSitemap } from './sitemap';
 import { setupVariables } from './variables';
+// import { setupDesignerExtensions } from './designerExtensions'; // Commented out due to API incompatibility
 
 /**
  * Sync table definitions
  */
-export function setupSyncTables(pack: coda.PackBuilder) {
+export function setupSyncTables(pack: coda.PackDefinitionBuilder) {
   setupSitemap(pack);
   setupDesignerElements(pack);
   setupColumns(pack);
@@ -24,6 +25,7 @@ export function setupSyncTables(pack: coda.PackBuilder) {
   setupOrderDetails(pack);
   setupPages(pack);
   setupVariables(pack);
+  // setupDesignerExtensions(pack); // Commented out due to API incompatibility
 
   // Add additional sync tables here
 }

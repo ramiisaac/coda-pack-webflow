@@ -45,14 +45,19 @@ export async function fetchPaginatedData(
 
   while (hasNextPage) {
     try {
+      // Append query parameters to URL
+      const urlWithParams = new URL(currentUrl);
+      Object.entries(queryParams).forEach(([key, value]) => {
+        urlWithParams.searchParams.append(key, value);
+      });
+
       const response = await context.fetcher.fetch({
         method: 'GET',
-        url: currentUrl,
+        url: urlWithParams.toString(),
         headers: {
           'Accept-Version': '1.0.0',
           ...(includeDrafts && { 'X-Draft': 'true' }),
         },
-        params: queryParams,
       });
 
       if (response.status !== 200) {
@@ -115,7 +120,7 @@ export async function fetchSiteDetails(
       throw error;
     }
     throw new coda.UserVisibleError(
-      `Failed to fetch site details: ${error.message}`
+      `Failed to fetch site details: ${error instanceof Error ? error.message : String(error)}`
     );
   }
 }

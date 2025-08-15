@@ -4,7 +4,7 @@ import { fetchPaginatedData, getErrorMessage } from './utils';
 /**
  * Collection-related formulas
  */
-export function setupCollections(pack: coda.PackBuilder) {
+export function setupCollections(pack: coda.PackDefinitionBuilder) {
   const CollectionSchema = coda.makeObjectSchema({
     properties: {
       id: { type: coda.ValueType.String, required: true },
@@ -92,14 +92,14 @@ export function setupCollections(pack: coda.PackBuilder) {
           'Content-Type': 'application/json',
           'Accept-Version': '1.0.0',
         },
-        body: {
+        body: JSON.stringify({
           fields: {
             name: name,
             slug: slug,
             _archived: false,
             _draft: false,
           },
-        },
+        }),
       });
 
       if (response.status !== 201) {
@@ -285,7 +285,7 @@ export function setupCollections(pack: coda.PackBuilder) {
     ],
     resultType: coda.ValueType.Object,
     schema: CollectionSchema,
-    execute: async function ([collectionId, itemId], context) {
+    execute: async function ([collectionId, itemId]: [string, string], context: coda.ExecutionContext) {
       const url = `https://api.webflow.com/v2/collections/${collectionId}/items/${itemId}`;
       const response = await context.fetcher.fetch({
         method: 'GET',

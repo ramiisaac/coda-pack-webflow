@@ -4,7 +4,7 @@ import { fetchPaginatedData, getErrorMessage } from './utils';
 /**
  * Variable-related formulas
  */
-export function setupVariables(pack: any) {
+export function setupVariables(pack: coda.PackDefinitionBuilder) {
   const VariableSchema = coda.makeObjectSchema({
     properties: {
       id: { type: coda.ValueType.String, required: true },
@@ -37,7 +37,7 @@ export function setupVariables(pack: any) {
     ],
     resultType: coda.ValueType.Array,
     items: VariableSchema,
-    execute: async function ([collectionId], context) {
+    execute: async function ([collectionId]: [string], context: coda.ExecutionContext) {
       const url = `https://api.webflow.com/v2/collections/${collectionId}/items`;
       const variables = await fetchPaginatedData(url, context);
 
@@ -74,7 +74,7 @@ export function setupVariables(pack: any) {
     ],
     resultType: coda.ValueType.Object,
     schema: VariableSchema,
-    execute: async function ([collectionId, name, value], context) {
+    execute: async function ([collectionId, name, value]: [string, string, string], context: coda.ExecutionContext) {
       const url = `https://api.webflow.com/v2/collections/${collectionId}/items`;
       const response = await context.fetcher.fetch({
         method: 'POST',
@@ -83,14 +83,14 @@ export function setupVariables(pack: any) {
           'Content-Type': 'application/json',
           'Accept-Version': '1.0.0',
         },
-        body: {
+        body: JSON.stringify({
           fields: {
             name: name,
             value: value,
             _archived: false,
             _draft: false,
           },
-        },
+        }),
       });
 
       if (response.status !== 201) {
@@ -127,7 +127,7 @@ export function setupVariables(pack: any) {
     ],
     resultType: coda.ValueType.Object,
     schema: VariableSchema,
-    execute: async function ([collectionId, variableId, value], context) {
+    execute: async function ([collectionId, variableId, value]: [string, string, string], context: coda.ExecutionContext) {
       const url = `https://api.webflow.com/v2/collections/${collectionId}/items/${variableId}`;
       const response = await context.fetcher.fetch({
         method: 'PATCH',
@@ -136,11 +136,11 @@ export function setupVariables(pack: any) {
           'Content-Type': 'application/json',
           'Accept-Version': '1.0.0',
         },
-        body: {
+        body: JSON.stringify({
           fields: {
             value: value,
           },
-        },
+        }),
       });
 
       if (response.status !== 200) {

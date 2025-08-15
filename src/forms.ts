@@ -4,7 +4,7 @@ import { fetchPaginatedData } from './utils';
 /**
  * Form-related formulas
  */
-export function setupForms(pack: coda.PackBuilder) {
+export function setupForms(pack: coda.PackDefinitionBuilder) {
   const FormSchema = coda.makeObjectSchema({
     properties: {
       id: { type: coda.ValueType.String, required: true },
@@ -46,19 +46,21 @@ export function setupForms(pack: coda.PackBuilder) {
       ],
       execute: async function (
         [siteId]: [string],
-        context: coda.ExecutionContext
-      ): Promise<any[]> {
+        context: coda.SyncExecutionContext
+      ) {
         const url = `https://api.webflow.com/v2/sites/${siteId}/forms`;
         const forms = await fetchPaginatedData(url, context, true);
 
-        return forms.map((form: any) => ({
-          id: form._id,
-          name: form.name,
-          slug: form.slug,
-          submissions: form.submissions || 0,
-          createdOn: form.createdOn,
-          updatedOn: form.updatedOn,
-        }));
+        return {
+          result: forms.map((form: any) => ({
+            id: form._id,
+            name: form.name,
+            slug: form.slug,
+            submissions: form.submissions || 0,
+            createdOn: form.createdOn,
+            updatedOn: form.updatedOn,
+          }))
+        };
       },
     },
   });

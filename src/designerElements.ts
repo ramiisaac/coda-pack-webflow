@@ -4,7 +4,7 @@ import { fetchPaginatedData } from './utils';
 /**
  * Sync table for Webflow Designer elements
  */
-export function setupDesignerElements(pack: coda.PackBuilder) {
+export function setupDesignerElements(pack: coda.PackDefinitionBuilder) {
   const DesignerElementSchema = coda.makeObjectSchema({
     properties: {
       id: { type: coda.ValueType.String, required: true },
@@ -46,19 +46,21 @@ export function setupDesignerElements(pack: coda.PackBuilder) {
       ],
       execute: async function (
         [siteId]: [string],
-        context: coda.ExecutionContext
-      ): Promise<any[]> {
+        context: coda.SyncExecutionContext
+      ) {
         const url = `https://api.webflow.com/v2/sites/${siteId}/designer/elements`;
         const elements = await fetchPaginatedData(url, context);
 
-        return elements.map((element: any) => ({
-          id: element._id,
-          name: element.name,
-          type: element.type,
-          text: element.text,
-          createdOn: element.createdOn,
-          updatedOn: element.updatedOn,
-        }));
+        return {
+          result: elements.map((element: any) => ({
+            id: element._id,
+            name: element.name,
+            type: element.type,
+            text: element.text,
+            createdOn: element.createdOn,
+            updatedOn: element.updatedOn,
+          }))
+        };
       },
     },
   });

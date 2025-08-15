@@ -3,7 +3,7 @@ import * as coda from '@codahq/packs-sdk';
 /**
  * Setup card-related formulas and sync tables
  */
-export function setupCards(pack: coda.PackBuilder) {
+export function setupCards(pack: coda.PackDefinitionBuilder) {
   // Basic card schema
   const CardSchema = coda.makeObjectSchema({
     properties: {
@@ -33,7 +33,7 @@ export function setupCards(pack: coda.PackBuilder) {
     ],
     resultType: coda.ValueType.Array,
     items: CardSchema,
-    execute: async function ([siteId], context) {
+    execute: async function ([siteId]: [string], context: coda.ExecutionContext) {
       const url = `https://api.webflow.com/v2/sites/${siteId}/cards`;
       const response = await context.fetcher.fetch({
         method: 'GET',

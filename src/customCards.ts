@@ -9,8 +9,11 @@ interface Product {
 
 /**
  * Custom Card for Displaying Webflow Products
+ * Note: Custom Cards are deprecated in current SDK version
  */
 export function setupCustomCards(pack: coda.PackDefinitionBuilder) {
+  // Custom Cards functionality is deprecated, commenting out
+  /*
   const ProductCardSchema = coda.makeObjectSchema({
     properties: {
       productName: { type: coda.ValueType.String, required: true },
@@ -50,4 +53,5 @@ export function setupCustomCards(pack: coda.PackDefinitionBuilder) {
       };
     },
   });
+  */
 }

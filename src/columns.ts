@@ -4,7 +4,7 @@ import { fetchPaginatedData } from './utils';
 /**
  * Column-related sync tables
  */
-export function setupColumns(pack: coda.PackBuilder) {
+export function setupColumns(pack: coda.PackDefinitionBuilder) {
   const ColumnSchema = coda.makeObjectSchema({
     properties: {
       id: { type: coda.ValueType.String, required: true },
@@ -28,35 +28,37 @@ export function setupColumns(pack: coda.PackBuilder) {
 
   pack.addSyncTable({
     name: 'Columns',
-    description: 'A table of all columns in your Webflow project.',
+    description: 'A table of all collection fields (columns) in your Webflow project.',
     identityName: 'Column',
     schema: ColumnSchema,
     connectionRequirement: coda.ConnectionRequirement.Required,
     formula: {
       name: 'SyncColumns',
-      description: 'Sync all columns from a Webflow project.',
+      description: 'Sync all fields (columns) from a Webflow collection.',
       parameters: [
         coda.makeParameter({
           type: coda.ParameterType.String,
           name: 'collectionId',
-          description: 'The ID of the Columns collection.',
+          description: 'The ID of the Webflow collection.',
           example: '605d1b4f5d3c3a74b0d6e123',
         }),
       ],
       execute: async function (
         [collectionId]: [string],
-        context: coda.ExecutionContext
-      ): Promise<any[]> {
-        const url = `https://api.webflow.com/v2/collections/${collectionId}/items`;
-        const columns = await fetchPaginatedData(url, context);
+        context: coda.SyncExecutionContext
+      ) {
+        const url = `https://api.webflow.com/v2/collections/${collectionId}/fields`;
+        const fields = await fetchPaginatedData(url, context);
 
-        return columns.map((column: any) => ({
-          id: column._id,
-          name: column.name,
-          order: column.order || 0,
-          createdOn: column.createdOn,
-          updatedOn: column.updatedOn,
-        }));
+        return {
+          result: fields.map((field: any) => ({
+            id: field.id,
+            name: field.displayName || field.slug,
+            order: field.order || 0,
+            createdOn: field.createdOn,
+            updatedOn: field.updatedOn,
+          }))
+        };
       },
     },
   });
@@ -67,8 +69,8 @@ export function setupColumns(pack: coda.PackBuilder) {
       id: { type: coda.ValueType.String, required: true },
       name: { type: coda.ValueType.String, required: true },
       statusOptions: {
-        type: coda.ValueType.String,
-        array: true,
+        type: coda.ValueType.Array,
+        items: { type: coda.ValueType.String },
         required: true,
         description: 'Dropdown options for the status column.',
       },
@@ -90,40 +92,44 @@ export function setupColumns(pack: coda.PackBuilder) {
 
   pack.addSyncTable({
     name: 'StatusColumns',
-    description: 'A table of status columns with predefined options.',
+    description: 'A table of status/option fields with predefined options.',
     identityName: 'StatusColumn',
     schema: StatusColumnSchema,
     connectionRequirement: coda.ConnectionRequirement.Required,
     formula: {
       name: 'SyncStatusColumns',
       description:
-        'Sync all status columns with their options from a Webflow project.',
+        'Sync all status/option fields with their options from a Webflow collection.',
       parameters: [
         coda.makeParameter({
           type: coda.ParameterType.String,
           name: 'collectionId',
-          description: 'The ID of the Columns collection.',
+          description: 'The ID of the Webflow collection.',
           example: '605d1b4f5d3c3a74b0d6e123',
         }),
       ],
       execute: async function (
         [collectionId]: [string],
-        context: coda.ExecutionContext
-      ): Promise<any[]> {
-        const url = `https://api.webflow.com/v2/collections/${collectionId}/items`;
-        const columns = await fetchPaginatedData(url, context);
+        context: coda.SyncExecutionContext
+      ) {
+        const url = `https://api.webflow.com/v2/collections/${collectionId}/fields`;
+        const fields = await fetchPaginatedData(url, context);
 
-        return columns.map((column: any) => ({
-          id: column._id,
-          name: column.name,
-          statusOptions: column.statusOptions || [
-            'Open',
-            'In Progress',
-            'Closed',
-          ],
-          createdOn: column.createdOn,
-          updatedOn: column.updatedOn,
-        }));
+        return {
+          result: fields
+            .filter((field: any) => field.type === 'Option') // Only include status/option fields
+            .map((field: any) => ({
+              id: field.id,
+              name: field.displayName || field.slug,
+              statusOptions: field.validations?.options?.map((opt: any) => opt.name) || [
+                'Open',
+                'In Progress', 
+                'Closed',
+              ],
+              createdOn: field.createdOn,
+              updatedOn: field.updatedOn,
+            }))
+        };
       },
     },
   });

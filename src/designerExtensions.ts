@@ -1,5 +1,5 @@
 import * as coda from '@codahq/packs-sdk';
-import { WebflowClient } from 'webflow-api';
+// import { WebflowClient } from 'webflow-api'; // Commented out due to API incompatibility
 
 interface ExtensionContext extends coda.ExecutionContext {
   addCardInput?: {
@@ -9,8 +9,11 @@ interface ExtensionContext extends coda.ExecutionContext {
 
 /**
  * Setup Designer Extensions using Webflow's Designer API
+ * Note: Designer Extensions are not supported in the current SDK version
  */
-export function setupDesignerExtensions(pack: coda.PackBuilder) {
+export function setupDesignerExtensions(pack: coda.PackDefinitionBuilder) {
+  // Designer Extensions functionality commented out due to API deprecation
+  /*
   pack.addExtension({
     name: 'InsertEmoji',
     description:
@@ -52,6 +55,7 @@ export function setupDesignerExtensions(pack: coda.PackBuilder) {
       };
     },
   });
+  */
 
   // Additional Extensions can be added here following the above pattern
 }

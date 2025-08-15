@@ -1,7 +1,6 @@
 // Define schemas for Webflow data
 
-import { coda } from '@codahq/packs-sdk';
-import { Site, Collection } from '../types/webflowTypes';
+import * as coda from '@codahq/packs-sdk';
 
 export const WebflowSchemas = {
   SiteSchema: coda.makeObjectSchema({

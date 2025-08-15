@@ -4,7 +4,7 @@ import { fetchPaginatedData } from './utils';
 /**
  * Pages-related formulas
  */
-export function setupPages(pack: coda.PackBuilder) {
+export function setupPages(pack: coda.PackDefinitionBuilder) {
   const PageSchema = coda.makeObjectSchema({
     properties: {
       id: { type: coda.ValueType.String, required: true },
@@ -45,18 +45,20 @@ export function setupPages(pack: coda.PackBuilder) {
       ],
       execute: async function (
         [siteId]: [string],
-        context: coda.ExecutionContext
-      ): Promise<any[]> {
+        context: coda.SyncExecutionContext
+      ) {
         const url = `https://api.webflow.com/v2/sites/${siteId}/pages`;
         const pages = await fetchPaginatedData(url, context);
 
-        return pages.map((page: any) => ({
-          id: page._id,
-          name: page.name,
-          slug: page.slug,
-          createdOn: page.createdOn,
-          updatedOn: page.updatedOn,
-        }));
+        return {
+          result: pages.map((page: any) => ({
+            id: page._id,
+            name: page.name,
+            slug: page.slug,
+            createdOn: page.createdOn,
+            updatedOn: page.updatedOn,
+          }))
+        };
       },
     },
   });

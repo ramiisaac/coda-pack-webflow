@@ -1,32 +1,57 @@
-import { coda } from '@codahq/packs-sdk';
-import './modules/webflow/dataApi';
-import './modules/webflow/syncTables';
-import './formulas/webflowFormulas';
+import * as coda from '@codahq/packs-sdk';
 
-// Define pack metadata
-coda.pack.setUserAuthentication({
+/**
+ * Webflow API Coda Pack
+ * 
+ * A comprehensive Coda Pack for Webflow API integration that provides:
+ * - Site management and data retrieval
+ * - CMS content sync tables for collections, pages, forms
+ * - E-commerce integration for orders and product data
+ * - Design variable management
+ * - Secure OAuth2 authentication
+ * 
+ * Features:
+ * - Multiple sync tables for different Webflow data types
+ * - Formulas for direct API interactions
+ * - Proper error handling and retry logic
+ * - Support for pagination and rate limiting
+ */
+
+// Create the pack
+export const pack = coda.newPack();
+
+// Define pack metadata and OAuth2 authentication
+pack.setUserAuthentication({
   type: coda.AuthenticationType.OAuth2,
   authorizationUrl: 'https://api.webflow.com/oauth/authorize',
   tokenUrl: 'https://api.webflow.com/oauth/access_token',
-  scopes: ['full.access'],
-  // Implement getConnectionName as needed
+  scopes: ['sites:read', 'sites:write', 'cms:read', 'cms:write', 'ecommerce:read', 'ecommerce:write'],
   getConnectionName: async function (context) {
-    // Example implementation
-    const response = await context.fetcher.fetch({
-      method: 'GET',
-      url: 'https://api.webflow.com/sites',
-      headers: {
-        Authorization: `Bearer YOUR_WEBFLOW_AUTH_TOKEN`,
-        'Accept-Version': '1.0.0',
-      },
-    });
-    const sites = response.body;
-    return sites.length > 0 ? sites[0].name : 'Webflow User';
+    try {
+      // Get user's sites to display a friendly connection name
+      const response = await context.fetcher.fetch({
+        method: 'GET',
+        url: 'https://api.webflow.com/sites',
+        headers: {
+          'Accept-Version': '1.0.0',
+        },
+      });
+      const sites = response.body;
+      return (Array.isArray(sites) && sites.length > 0 && sites[0]?.name) || 'Webflow User';
+    } catch (error) {
+      // Fallback to generic name if API call fails
+      return 'Webflow User';
+    }
   },
 });
 
-// Add more pack configurations or initializations as needed
+// Add network domains for security
+pack.addNetworkDomain('api.webflow.com');
 
-// Example: Define a simple schema or add more features
-// coda.pack.addFormula({ ... });
-// coda.pack.addSyncTable({ ... });
+// Import and setup all the pack components
+import { setupSyncTables } from './syncTables';
+import { setupFormulas } from './formulas/webflowFormulas';
+
+// Setup all sync tables and formulas
+setupSyncTables(pack);
+setupFormulas(pack);

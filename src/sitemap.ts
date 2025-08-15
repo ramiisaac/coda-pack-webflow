@@ -4,7 +4,7 @@ import { fetchPaginatedData } from './utils';
 /**
  * Sync table for Webflow Sitemap
  */
-export function setupSitemap(pack: coda.PackBuilder) {
+export function setupSitemap(pack: coda.PackDefinitionBuilder) {
   const SitemapSchema = coda.makeObjectSchema({
     properties: {
       url: { type: coda.ValueType.String, required: true },
@@ -37,15 +37,17 @@ export function setupSitemap(pack: coda.PackBuilder) {
       ],
       execute: async function (
         [siteId]: [string],
-        context: coda.ExecutionContext
+        context: coda.SyncExecutionContext
       ) {
         const url = `https://api.webflow.com/v2/sites/${siteId}/sitemap`;
         const sitemap = await fetchPaginatedData(url, context);
 
-        return sitemap.map((entry: any) => ({
-          url: entry.url,
-          lastModified: entry.lastModified,
-        }));
+        return {
+          result: sitemap.map((entry: any) => ({
+            url: entry.url,
+            lastModified: entry.lastModified,
+          }))
+        };
       },
     },
   });

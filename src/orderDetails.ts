@@ -4,7 +4,7 @@ import { fetchPaginatedData } from './utils';
 /**
  * Order Details-related formulas
  */
-export function setupOrderDetails(pack: coda.PackBuilder) {
+export function setupOrderDetails(pack: coda.PackDefinitionBuilder) {
   const OrderDetailSchema = coda.makeObjectSchema({
     properties: {
       orderId: { type: coda.ValueType.String, required: true },
@@ -47,19 +47,21 @@ export function setupOrderDetails(pack: coda.PackBuilder) {
       ],
       execute: async function (
         [orderId]: [string],
-        context: coda.ExecutionContext
-      ): Promise<any[]> {
+        context: coda.SyncExecutionContext
+      ) {
         const url = `https://api.webflow.com/v2/orders/${orderId}/items`;
         const orderDetails = await fetchPaginatedData(url, context);
 
-        return orderDetails.map((detail: any) => ({
-          orderId: orderId,
-          productName: detail.productName,
-          quantity: detail.quantity,
-          price: detail.price,
-          createdOn: detail.createdOn,
-          updatedOn: detail.updatedOn,
-        }));
+        return {
+          result: orderDetails.map((detail: any) => ({
+            orderId: orderId,
+            productName: detail.productName,
+            quantity: detail.quantity,
+            price: detail.price,
+            createdOn: detail.createdOn,
+            updatedOn: detail.updatedOn,
+          }))
+        };
       },
     },
   });

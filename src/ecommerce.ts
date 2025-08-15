@@ -4,7 +4,7 @@ import { fetchPaginatedData } from './utils';
 /**
  * Ecommerce-related formulas
  */
-export function setupEcommerce(pack: coda.PackBuilder) {
+export function setupEcommerce(pack: coda.PackDefinitionBuilder) {
   const OrderSchema = coda.makeObjectSchema({
     properties: {
       id: { type: coda.ValueType.String, required: true },
@@ -46,19 +46,21 @@ export function setupEcommerce(pack: coda.PackBuilder) {
       ],
       execute: async function (
         [siteId]: [string],
-        context: coda.ExecutionContext
-      ): Promise<any[]> {
+        context: coda.SyncExecutionContext
+      ) {
         const url = `https://api.webflow.com/v2/sites/${siteId}/orders`;
         const orders = await fetchPaginatedData(url, context, true);
 
-        return orders.map((order: any) => ({
-          id: order._id,
-          email: order.email,
-          total: parseFloat(order.total),
-          status: order.status,
-          createdOn: order.createdOn,
-          updatedOn: order.updatedOn,
-        }));
+        return {
+          result: orders.map((order: any) => ({
+            id: order._id,
+            email: order.email,
+            total: parseFloat(order.total),
+            status: order.status,
+            createdOn: order.createdOn,
+            updatedOn: order.updatedOn,
+          }))
+        };
       },
     },
   });
