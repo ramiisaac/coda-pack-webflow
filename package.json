@@ -12,7 +12,7 @@
     "validate": "coda validate src/pack.ts",
     "upload": "coda upload src/pack.ts"
   },
-  "author": "",
+  "author": "Rami Isaac <https://github.com/ramiisaac>",
   "license": "MIT",
   "dependencies": {
     "@codahq/packs-sdk": "^1.8.3",
@@ -52,6 +52,5 @@
     "sinon": "17.0.3",
     "ts-node": "10.9.2",
     "typescript": "^5.7.2"
-  },
-  "packageManager": "yarn@1.22.22"
+  }
 }
