@@ -1,5 +1,6 @@
 import * as coda from '@codahq/packs-sdk';
 import { fetchPaginatedData } from './utils';
+import { WEBFLOW_ECOMMERCE_API } from './constants/paths';
 
 /**
  * Ecommerce-related formulas
@@ -48,7 +49,7 @@ export function setupEcommerce(pack: coda.PackDefinitionBuilder) {
         [siteId]: [string],
         context: coda.SyncExecutionContext
       ) {
-        const url = `https://api.webflow.com/v2/sites/${siteId}/orders`;
+        const url = WEBFLOW_ECOMMERCE_API.GET_ORDERS(siteId);
         const orders = await fetchPaginatedData(url, context, true);
 
         return {

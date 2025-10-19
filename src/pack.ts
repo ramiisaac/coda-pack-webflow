@@ -1,4 +1,5 @@
 import * as coda from '@codahq/packs-sdk';
+import { WEBFLOW_API_BASE, WEBFLOW_OAUTH, WEBFLOW_DATA_API } from './constants/paths';
 
 /**
  * Webflow API Coda Pack
@@ -23,15 +24,15 @@ export const pack = coda.newPack();
 // Define pack metadata and OAuth2 authentication
 pack.setUserAuthentication({
   type: coda.AuthenticationType.OAuth2,
-  authorizationUrl: 'https://api.webflow.com/oauth/authorize',
-  tokenUrl: 'https://api.webflow.com/oauth/access_token',
+  authorizationUrl: WEBFLOW_OAUTH.AUTHORIZE_URL,
+  tokenUrl: WEBFLOW_OAUTH.TOKEN_URL,
   scopes: ['sites:read', 'sites:write', 'cms:read', 'cms:write', 'ecommerce:read', 'ecommerce:write'],
   getConnectionName: async function (context) {
     try {
       // Get user's sites to display a friendly connection name
       const response = await context.fetcher.fetch({
         method: 'GET',
-        url: 'https://api.webflow.com/sites',
+        url: WEBFLOW_DATA_API.GET_SITES,
         headers: {
           'Accept-Version': '1.0.0',
         },
