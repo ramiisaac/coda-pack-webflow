@@ -1,0 +1,3 @@
+require: tsx
+timeout: 10000
+spec: 'test/**/*.ts'

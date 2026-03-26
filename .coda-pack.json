@@ -2,32 +2,6 @@
   "name": "webflow-packs",
   "description": "Integration pack for Webflow's Data API",
   "version": "1.0.0",
-  "pack": "./dist/pack.js",
-  "logoUrl": "https://example.com/logo.png",
-  "categories": ["Productivity"],
-  "blocks": [
-    {
-      "type": "formula",
-      "name": "GetWebflowSite",
-      "description": "Fetch a Webflow site by its ID.",
-      "schema": "./src/schemas/webflowSchemas.ts",
-      "code": "./src/formulas/webflowFormulas.ts"
-    },
-    {
-      "type": "syncTable",
-      "name": "Webflow Sites",
-      "description": "Syncs Webflow sites",
-      "schema": "./src/schemas/webflowSchemas.ts",
-      "code": "./src/modules/webflow/syncTables.ts"
-    },
-    {
-      "type": "syncTable",
-      "name": "Webflow Collections",
-      "description": "Syncs Webflow collections for a specific site",
-      "schema": "./src/schemas/webflowSchemas.ts",
-      "code": "./src/modules/webflow/syncTables.ts"
-    }
-    // Add more blocks as needed
-  ],
-  "manifestVersion": 1
-} 
+  "pack": "./src/pack.ts",
+  "categories": ["Productivity"]
+}

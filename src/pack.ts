@@ -1,16 +1,20 @@
 import * as coda from '@codahq/packs-sdk';
-import { WEBFLOW_API_BASE, WEBFLOW_OAUTH, WEBFLOW_DATA_API } from './constants/paths';
+import {
+  WEBFLOW_API_BASE,
+  WEBFLOW_OAUTH,
+  WEBFLOW_DATA_API,
+} from './constants/paths';
 
 /**
  * Webflow API Coda Pack
- * 
+ *
  * A comprehensive Coda Pack for Webflow API integration that provides:
  * - Site management and data retrieval
  * - CMS content sync tables for collections, pages, forms
  * - E-commerce integration for orders and product data
  * - Design variable management
  * - Secure OAuth2 authentication
- * 
+ *
  * Features:
  * - Multiple sync tables for different Webflow data types
  * - Formulas for direct API interactions
@@ -26,7 +30,14 @@ pack.setUserAuthentication({
   type: coda.AuthenticationType.OAuth2,
   authorizationUrl: WEBFLOW_OAUTH.AUTHORIZE_URL,
   tokenUrl: WEBFLOW_OAUTH.TOKEN_URL,
-  scopes: ['sites:read', 'sites:write', 'cms:read', 'cms:write', 'ecommerce:read', 'ecommerce:write'],
+  scopes: [
+    'sites:read',
+    'sites:write',
+    'cms:read',
+    'cms:write',
+    'ecommerce:read',
+    'ecommerce:write',
+  ],
   getConnectionName: async function (context) {
     try {
       // Get user's sites to display a friendly connection name
@@ -38,7 +49,10 @@ pack.setUserAuthentication({
         },
       });
       const sites = response.body;
-      return (Array.isArray(sites) && sites.length > 0 && sites[0]?.name) || 'Webflow User';
+      return (
+        (Array.isArray(sites) && sites.length > 0 && sites[0]?.name) ||
+        'Webflow User'
+      );
     } catch (error) {
       // Fallback to generic name if API call fails
       return 'Webflow User';

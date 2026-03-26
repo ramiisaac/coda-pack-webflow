@@ -4,42 +4,55 @@
   "description": "A Coda Pack for Webflow API integration",
   "main": "src/pack.ts",
   "scripts": {
-    "postinstall": "npx patch-package",
-    "test": "mocha --require ts-node/register test/*.ts",
+    "test": "mocha",
     "lint": "eslint src/**/*.ts",
     "format": "prettier --write src/**/*.ts",
-    "build": "npm run validate && tsc",
+    "typecheck": "tsc --noEmit",
+    "build": "npx coda build src/pack.ts",
     "validate": "coda validate src/pack.ts",
     "upload": "coda upload src/pack.ts"
   },
-  "author": "Rami Isaac <https://github.com/ramiisaac>",
+  "author": "Rami Isaac <raisaac@icloud.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ramiisaac/coda_webflow-api"
+  },
+  "homepage": "https://github.com/ramiisaac/coda_webflow-api#readme",
+  "bugs": {
+    "url": "https://github.com/ramiisaac/coda_webflow-api/issues"
+  },
+  "keywords": [
+    "webflow",
+    "api",
+    "cms",
+    "coda",
+    "pack"
+  ],
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "dependencies": {
-    "@codahq/packs-sdk": "^1.9.9"
+    "@codahq/packs-sdk": "^1.13.2"
   },
   "devDependencies": {
-    "@types/chai": "^4.3.16",
-    "@types/content-disposition": "^0.5.8",
-    "@types/luxon": "^3.4.2",
-    "@types/mime-types": "^2.1.4",
-    "@types/mocha": "^10.0.10",
+    "@eslint/js": "^9.20.1",
+    "@types/chai": "^4.3.12",
+    "@types/mocha": "^10.0.6",
     "@types/node": "^22.13.4",
     "@types/sinon": "^17.0.3",
-    "@eslint/js": "^9.20.1",
     "@typescript-eslint/eslint-plugin": "^8.24.0",
     "@typescript-eslint/parser": "^8.24.0",
-    "chai": "^4.5.0",
+    "chai": "^4.4.1",
     "eslint": "^9.20.1",
-    "eslint-plugin-ban": "^2.0.0",
-    "eslint-plugin-filenames": "^1.3.2",
-    "eslint-plugin-local": "^6.0.0",
-    "eslint-plugin-prefer-let": "^4.0.0",
     "eslint-plugin-prettier": "^5.2.3",
+    "locate-path": "6",
     "mocha": "^11.1.0",
     "prettier": "^3.5.1",
-    "sinon": "^19.0.2",
+    "sinon": "^17.0.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.7.3"
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
   },
   "packageManager": "pnpm@9.12.3",
   "type": "commonjs"
