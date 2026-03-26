@@ -10,7 +10,11 @@
     "typecheck": "tsc --noEmit",
     "build": "npx coda build src/pack.ts",
     "validate": "coda validate src/pack.ts",
-    "upload": "coda upload src/pack.ts"
+    "upload": "coda upload src/pack.ts",
+    "coda:build": "coda build src/pack.ts",
+    "coda:upload": "coda upload src/pack.ts",
+    "coda:release": "coda release src/pack.ts",
+    "coda:validate": "coda validate src/pack.ts"
   },
   "author": "Rami Isaac <raisaac@icloud.com>",
   "license": "MIT",

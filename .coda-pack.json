@@ -1,7 +1,1 @@
-{
-  "name": "webflow-packs",
-  "description": "Integration pack for Webflow's Data API",
-  "version": "1.0.0",
-  "pack": "./src/pack.ts",
-  "categories": ["Productivity"]
-}
+{"packId": 33830}
