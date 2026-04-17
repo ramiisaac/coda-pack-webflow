@@ -102,8 +102,8 @@ This pack uses OAuth2 against the Webflow API.
 
 ## Repository
 
-- Source: https://github.com/ramiisaac/coda_webflow-api
-- Issue tracking: https://github.com/ramiisaac/coda_webflow-api/issues
+- Source: https://github.com/ramiisaac/coda_webflow
+- Issue tracking: https://github.com/ramiisaac/coda_webflow/issues
 
 ## License
 

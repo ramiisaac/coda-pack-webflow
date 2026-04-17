@@ -1,5 +1,5 @@
 {
-  "name": "coda-webflow-api",
+  "name": "coda-webflow",
   "version": "1.0.0",
   "description": "A Coda Pack for Webflow API integration",
   "main": "src/pack.ts",
@@ -20,11 +20,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ramiisaac/coda_webflow-api"
+    "url": "https://github.com/ramiisaac/coda_webflow"
   },
-  "homepage": "https://github.com/ramiisaac/coda_webflow-api#readme",
+  "homepage": "https://github.com/ramiisaac/coda_webflow#readme",
   "bugs": {
-    "url": "https://github.com/ramiisaac/coda_webflow-api/issues"
+    "url": "https://github.com/ramiisaac/coda_webflow/issues"
   },
   "keywords": [
     "webflow",
