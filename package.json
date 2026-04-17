@@ -14,7 +14,7 @@
     "coda:build": "coda build src/pack.ts",
     "coda:validate": "coda validate src/pack.ts",
     "coda:upload": "coda upload src/pack.ts",
-    "coda:release": "coda release src/pack.ts"
+    "coda:release": "coda release src/pack.ts 49 -n \"Portfolio polish and release\""
   },
   "author": "Rami Isaac <raisaac@icloud.com>",
   "license": "MIT",
