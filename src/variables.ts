@@ -1,5 +1,6 @@
 import * as coda from '@codahq/packs-sdk';
 import { fetchPaginatedData, getErrorMessage } from './utils';
+import { DesignVariable } from './types/webflowTypes';
 
 /**
  * Variable-related formulas
@@ -37,11 +38,14 @@ export function setupVariables(pack: coda.PackDefinitionBuilder) {
     ],
     resultType: coda.ValueType.Array,
     items: VariableSchema,
-    execute: async function ([collectionId]: [string], context: coda.ExecutionContext) {
+    execute: async function (
+      [collectionId]: [string],
+      context: coda.ExecutionContext
+    ) {
       const url = `https://api.webflow.com/v2/collections/${collectionId}/items`;
-      const variables = await fetchPaginatedData(url, context);
+      const variables = await fetchPaginatedData<DesignVariable>(url, context);
 
-      return variables.map((variable: any) => ({
+      return variables.map((variable) => ({
         id: variable._id,
         name: variable.name,
         value: variable.value,
@@ -74,7 +78,10 @@ export function setupVariables(pack: coda.PackDefinitionBuilder) {
     ],
     resultType: coda.ValueType.Object,
     schema: VariableSchema,
-    execute: async function ([collectionId, name, value]: [string, string, string], context: coda.ExecutionContext) {
+    execute: async function (
+      [collectionId, name, value]: [string, string, string],
+      context: coda.ExecutionContext
+    ) {
       const url = `https://api.webflow.com/v2/collections/${collectionId}/items`;
       const response = await context.fetcher.fetch({
         method: 'POST',
@@ -127,7 +134,10 @@ export function setupVariables(pack: coda.PackDefinitionBuilder) {
     ],
     resultType: coda.ValueType.Object,
     schema: VariableSchema,
-    execute: async function ([collectionId, variableId, value]: [string, string, string], context: coda.ExecutionContext) {
+    execute: async function (
+      [collectionId, variableId, value]: [string, string, string],
+      context: coda.ExecutionContext
+    ) {
       const url = `https://api.webflow.com/v2/collections/${collectionId}/items/${variableId}`;
       const response = await context.fetcher.fetch({
         method: 'PATCH',

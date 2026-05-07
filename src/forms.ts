@@ -1,5 +1,6 @@
 import * as coda from '@codahq/packs-sdk';
 import { fetchPaginatedData } from './utils';
+import { Form } from './types/webflowTypes';
 
 /**
  * Form-related formulas
@@ -49,17 +50,17 @@ export function setupForms(pack: coda.PackDefinitionBuilder) {
         context: coda.SyncExecutionContext
       ) {
         const url = `https://api.webflow.com/v2/sites/${siteId}/forms`;
-        const forms = await fetchPaginatedData(url, context, true);
+        const forms = await fetchPaginatedData<Form>(url, context, true);
 
         return {
-          result: forms.map((form: any) => ({
+          result: forms.map((form) => ({
             id: form._id,
             name: form.name,
             slug: form.slug,
             submissions: form.submissions || 0,
             createdOn: form.createdOn,
             updatedOn: form.updatedOn,
-          }))
+          })),
         };
       },
     },

@@ -1,5 +1,6 @@
 import * as coda from '@codahq/packs-sdk';
 import { fetchPaginatedData } from './utils';
+import { Page } from './types/webflowTypes';
 
 /**
  * Pages-related formulas
@@ -48,16 +49,16 @@ export function setupPages(pack: coda.PackDefinitionBuilder) {
         context: coda.SyncExecutionContext
       ) {
         const url = `https://api.webflow.com/v2/sites/${siteId}/pages`;
-        const pages = await fetchPaginatedData(url, context);
+        const pages = await fetchPaginatedData<Page>(url, context);
 
         return {
-          result: pages.map((page: any) => ({
+          result: pages.map((page) => ({
             id: page._id,
             name: page.name,
             slug: page.slug,
             createdOn: page.createdOn,
             updatedOn: page.updatedOn,
-          }))
+          })),
         };
       },
     },

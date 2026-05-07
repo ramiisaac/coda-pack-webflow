@@ -1,5 +1,6 @@
 import * as coda from '@codahq/packs-sdk';
 import { fetchPaginatedData } from './utils';
+import { CollectionField } from './types/webflowTypes';
 
 /**
  * Column-related sync tables
@@ -28,7 +29,8 @@ export function setupColumns(pack: coda.PackDefinitionBuilder) {
 
   pack.addSyncTable({
     name: 'Columns',
-    description: 'A table of all collection fields (columns) in your Webflow project.',
+    description:
+      'A table of all collection fields (columns) in your Webflow project.',
     identityName: 'Column',
     schema: ColumnSchema,
     connectionRequirement: coda.ConnectionRequirement.Required,
@@ -48,16 +50,16 @@ export function setupColumns(pack: coda.PackDefinitionBuilder) {
         context: coda.SyncExecutionContext
       ) {
         const url = `https://api.webflow.com/v2/collections/${collectionId}/fields`;
-        const fields = await fetchPaginatedData(url, context);
+        const fields = await fetchPaginatedData<CollectionField>(url, context);
 
         return {
-          result: fields.map((field: any) => ({
+          result: fields.map((field) => ({
             id: field.id,
-            name: field.displayName || field.slug,
+            name: field.displayName ?? field.slug ?? field.id,
             order: field.order || 0,
             createdOn: field.createdOn,
             updatedOn: field.updatedOn,
-          }))
+          })),
         };
       },
     },
@@ -113,22 +115,20 @@ export function setupColumns(pack: coda.PackDefinitionBuilder) {
         context: coda.SyncExecutionContext
       ) {
         const url = `https://api.webflow.com/v2/collections/${collectionId}/fields`;
-        const fields = await fetchPaginatedData(url, context);
+        const fields = await fetchPaginatedData<CollectionField>(url, context);
 
         return {
           result: fields
-            .filter((field: any) => field.type === 'Option') // Only include status/option fields
-            .map((field: any) => ({
+            .filter((field) => field.type === 'Option')
+            .map((field) => ({
               id: field.id,
-              name: field.displayName || field.slug,
-              statusOptions: field.validations?.options?.map((opt: any) => opt.name) || [
-                'Open',
-                'In Progress', 
-                'Closed',
-              ],
+              name: field.displayName ?? field.slug ?? field.id,
+              statusOptions: field.validations?.options?.map(
+                (opt) => opt.name
+              ) || ['Open', 'In Progress', 'Closed'],
               createdOn: field.createdOn,
               updatedOn: field.updatedOn,
-            }))
+            })),
         };
       },
     },

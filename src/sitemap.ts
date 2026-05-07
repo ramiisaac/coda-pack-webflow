@@ -1,5 +1,6 @@
 import * as coda from '@codahq/packs-sdk';
 import { fetchPaginatedData } from './utils';
+import { SitemapEntry } from './types/webflowTypes';
 
 /**
  * Sync table for Webflow Sitemap
@@ -40,13 +41,13 @@ export function setupSitemap(pack: coda.PackDefinitionBuilder) {
         context: coda.SyncExecutionContext
       ) {
         const url = `https://api.webflow.com/v2/sites/${siteId}/sitemap`;
-        const sitemap = await fetchPaginatedData(url, context);
+        const sitemap = await fetchPaginatedData<SitemapEntry>(url, context);
 
         return {
-          result: sitemap.map((entry: any) => ({
+          result: sitemap.map((entry) => ({
             url: entry.url,
             lastModified: entry.lastModified,
-          }))
+          })),
         };
       },
     },

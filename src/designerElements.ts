@@ -1,5 +1,6 @@
 import * as coda from '@codahq/packs-sdk';
 import { fetchPaginatedData } from './utils';
+import { DesignerElement } from './types/webflowTypes';
 
 /**
  * Sync table for Webflow Designer elements
@@ -49,17 +50,20 @@ export function setupDesignerElements(pack: coda.PackDefinitionBuilder) {
         context: coda.SyncExecutionContext
       ) {
         const url = `https://api.webflow.com/v2/sites/${siteId}/designer/elements`;
-        const elements = await fetchPaginatedData(url, context);
+        const elements = await fetchPaginatedData<DesignerElement>(
+          url,
+          context
+        );
 
         return {
-          result: elements.map((element: any) => ({
+          result: elements.map((element) => ({
             id: element._id,
             name: element.name,
             type: element.type,
             text: element.text,
             createdOn: element.createdOn,
             updatedOn: element.updatedOn,
-          }))
+          })),
         };
       },
     },

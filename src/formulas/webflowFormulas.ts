@@ -1,5 +1,6 @@
 import * as coda from '@codahq/packs-sdk';
 import { WebflowSchemas } from '../schemas/webflowSchemas';
+import { Collection } from '../types/webflowTypes';
 import { fetchPaginatedData } from '../utils';
 import { WEBFLOW_DATA_API } from '../constants/paths';
 
@@ -72,7 +73,7 @@ export function setupFormulas(pack: coda.PackDefinitionBuilder) {
       context: coda.ExecutionContext
     ) {
       const url = WEBFLOW_DATA_API.GET_COLLECTIONS(siteId);
-      const collections = await fetchPaginatedData(url, context);
+      const collections = await fetchPaginatedData<Collection>(url, context);
       return collections;
     },
   });

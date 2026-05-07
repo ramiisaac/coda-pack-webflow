@@ -1,5 +1,10 @@
 import * as coda from '@codahq/packs-sdk';
-import { fetchPaginatedData, getErrorMessage } from './utils';
+import { fetchPaginatedData, getErrorMessage, requireBody } from './utils';
+import {
+  Collection,
+  CollectionItem,
+  CollectionItemRequestBody,
+} from './types/webflowTypes';
 
 /**
  * Collection-related formulas
@@ -42,11 +47,15 @@ export function setupCollections(pack: coda.PackDefinitionBuilder) {
     execute: async function (
       [siteId]: [string],
       context: coda.ExecutionContext
-    ): Promise<any[]> {
+    ) {
       const url = `https://api.webflow.com/v2/sites/${siteId}/collections`;
-      const collections = await fetchPaginatedData(url, context, true);
+      const collections = await fetchPaginatedData<Collection>(
+        url,
+        context,
+        true
+      );
 
-      return collections.map((collection: any) => ({
+      return collections.map((collection) => ({
         id: collection._id,
         name: collection.name,
         slug: collection.slug,
@@ -83,9 +92,9 @@ export function setupCollections(pack: coda.PackDefinitionBuilder) {
     execute: async function (
       [collectionId, name, slug]: [string, string, string | undefined],
       context: coda.ExecutionContext
-    ): Promise<any> {
+    ) {
       const url = `https://api.webflow.com/v2/collections/${collectionId}/items`;
-      const response = await context.fetcher.fetch({
+      const response = await context.fetcher.fetch<CollectionItem>({
         method: 'POST',
         url: url,
         headers: {
@@ -108,12 +117,13 @@ export function setupCollections(pack: coda.PackDefinitionBuilder) {
         );
       }
 
+      const item = requireBody(response.body, 'CreateCollectionItem');
       return {
-        id: response.body._id,
-        name: response.body.name,
-        slug: response.body.slug,
-        createdOn: response.body.createdOn,
-        updatedOn: response.body.updatedOn,
+        id: item._id,
+        name: item.name,
+        slug: item.slug,
+        createdOn: item.createdOn,
+        updatedOn: item.updatedOn,
       };
     },
   });
@@ -157,9 +167,9 @@ export function setupCollections(pack: coda.PackDefinitionBuilder) {
         string | undefined,
       ],
       context: coda.ExecutionContext
-    ): Promise<any> {
+    ) {
       const url = `https://api.webflow.com/v2/collections/${collectionId}/items/${itemId}`;
-      const body: any = {
+      const body: CollectionItemRequestBody = {
         fields: {
           _archived: false,
           _draft: false,
@@ -169,14 +179,14 @@ export function setupCollections(pack: coda.PackDefinitionBuilder) {
       if (name !== undefined) body.fields.name = name;
       if (slug !== undefined) body.fields.slug = slug;
 
-      const response = await context.fetcher.fetch({
+      const response = await context.fetcher.fetch<CollectionItem>({
         method: 'PATCH',
         url: url,
         headers: {
           'Content-Type': 'application/json',
           'Accept-Version': '1.0.0',
         },
-        body: body,
+        body: JSON.stringify(body),
       });
 
       if (response.status !== 200) {
@@ -185,12 +195,13 @@ export function setupCollections(pack: coda.PackDefinitionBuilder) {
         );
       }
 
+      const item = requireBody(response.body, 'UpdateCollectionItem');
       return {
-        id: response.body._id,
-        name: response.body.name,
-        slug: response.body.slug,
-        createdOn: response.body.createdOn,
-        updatedOn: response.body.updatedOn,
+        id: item._id,
+        name: item.name,
+        slug: item.slug,
+        createdOn: item.createdOn,
+        updatedOn: item.updatedOn,
       };
     },
   });
@@ -252,11 +263,11 @@ export function setupCollections(pack: coda.PackDefinitionBuilder) {
       [collectionId]: [string],
       context: coda.ExecutionContext
     ): Promise<boolean> {
-      const items = await fetchPaginatedData(
+      const items = await fetchPaginatedData<CollectionItem>(
         `https://api.webflow.com/v2/collections/${collectionId}/items`,
         context
       );
-      const deletePromises = items.map((item: any) =>
+      const deletePromises = items.map((item) =>
         context.fetcher.fetch({
           method: 'DELETE',
           url: `https://api.webflow.com/v2/collections/${collectionId}/items/${item._id}`,
@@ -285,9 +296,12 @@ export function setupCollections(pack: coda.PackDefinitionBuilder) {
     ],
     resultType: coda.ValueType.Object,
     schema: CollectionSchema,
-    execute: async function ([collectionId, itemId]: [string, string], context: coda.ExecutionContext) {
+    execute: async function (
+      [collectionId, itemId]: [string, string],
+      context: coda.ExecutionContext
+    ) {
       const url = `https://api.webflow.com/v2/collections/${collectionId}/items/${itemId}`;
-      const response = await context.fetcher.fetch({
+      const response = await context.fetcher.fetch<CollectionItem>({
         method: 'GET',
         url,
       });
@@ -298,12 +312,13 @@ export function setupCollections(pack: coda.PackDefinitionBuilder) {
         );
       }
 
+      const item = requireBody(response.body, 'GetCollectionItem');
       return {
-        id: response.body._id,
-        name: response.body.name,
-        slug: response.body.slug,
-        createdOn: response.body.createdOn,
-        updatedOn: response.body.updatedOn,
+        id: item._id,
+        name: item.name,
+        slug: item.slug,
+        createdOn: item.createdOn,
+        updatedOn: item.updatedOn,
       };
     },
   });

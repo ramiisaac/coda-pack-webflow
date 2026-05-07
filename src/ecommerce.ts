@@ -1,6 +1,7 @@
 import * as coda from '@codahq/packs-sdk';
 import { fetchPaginatedData } from './utils';
 import { WEBFLOW_ECOMMERCE_API } from './constants/paths';
+import { Order } from './types/webflowTypes';
 
 /**
  * Ecommerce-related formulas
@@ -50,17 +51,20 @@ export function setupEcommerce(pack: coda.PackDefinitionBuilder) {
         context: coda.SyncExecutionContext
       ) {
         const url = WEBFLOW_ECOMMERCE_API.GET_ORDERS(siteId);
-        const orders = await fetchPaginatedData(url, context, true);
+        const orders = await fetchPaginatedData<Order>(url, context, true);
 
         return {
-          result: orders.map((order: any) => ({
+          result: orders.map((order) => ({
             id: order._id,
             email: order.email,
-            total: parseFloat(order.total),
+            total:
+              typeof order.total === 'number'
+                ? order.total
+                : parseFloat(order.total),
             status: order.status,
             createdOn: order.createdOn,
             updatedOn: order.updatedOn,
-          }))
+          })),
         };
       },
     },

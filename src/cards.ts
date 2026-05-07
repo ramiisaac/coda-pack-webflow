@@ -1,4 +1,6 @@
 import * as coda from '@codahq/packs-sdk';
+import { requireBody } from './utils';
+import { Card, CardsResponse } from './types/webflowTypes';
 
 /**
  * Setup card-related formulas and sync tables
@@ -33,14 +35,18 @@ export function setupCards(pack: coda.PackDefinitionBuilder) {
     ],
     resultType: coda.ValueType.Array,
     items: CardSchema,
-    execute: async function ([siteId]: [string], context: coda.ExecutionContext) {
+    execute: async function (
+      [siteId]: [string],
+      context: coda.ExecutionContext
+    ) {
       const url = `https://api.webflow.com/v2/sites/${siteId}/cards`;
-      const response = await context.fetcher.fetch({
+      const response = await context.fetcher.fetch<CardsResponse>({
         method: 'GET',
         url,
       });
+      const body = requireBody(response.body, 'ListCards');
 
-      return response.body.cards.map((card: any) => ({
+      return body.cards.map((card: Card) => ({
         id: card._id,
         name: card.name,
         type: card.type,

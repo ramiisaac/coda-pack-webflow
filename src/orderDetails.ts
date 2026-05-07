@@ -1,5 +1,6 @@
 import * as coda from '@codahq/packs-sdk';
 import { fetchPaginatedData } from './utils';
+import { OrderLineItem } from './types/webflowTypes';
 
 /**
  * Order Details-related formulas
@@ -50,17 +51,20 @@ export function setupOrderDetails(pack: coda.PackDefinitionBuilder) {
         context: coda.SyncExecutionContext
       ) {
         const url = `https://api.webflow.com/v2/orders/${orderId}/items`;
-        const orderDetails = await fetchPaginatedData(url, context);
+        const orderDetails = await fetchPaginatedData<OrderLineItem>(
+          url,
+          context
+        );
 
         return {
-          result: orderDetails.map((detail: any) => ({
+          result: orderDetails.map((detail) => ({
             orderId: orderId,
             productName: detail.productName,
             quantity: detail.quantity,
             price: detail.price,
             createdOn: detail.createdOn,
             updatedOn: detail.updatedOn,
-          }))
+          })),
         };
       },
     },
