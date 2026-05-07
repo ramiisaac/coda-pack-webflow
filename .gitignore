@@ -54,3 +54,6 @@ yarn.lock
 
 # Local workspace artifacts
 repo-descriptions-status.json
+Icon?
+AGENTS.md
+.github/copilot-instructions.md

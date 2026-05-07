@@ -4,17 +4,17 @@
   "description": "A Coda Pack for Webflow API integration",
   "main": "src/pack.ts",
   "scripts": {
-    "build": "coda build src/pack.ts",
+    "build": "pnpm run coda:build",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint src/**/*.ts",
-    "lint:fix": "eslint src/**/*.ts --fix",
-    "format": "prettier --write src/**/*.ts",
-    "format:check": "prettier --check src/**/*.ts",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "test": "mocha",
     "coda:build": "coda build src/pack.ts",
     "coda:validate": "coda validate src/pack.ts",
     "coda:upload": "coda upload src/pack.ts",
-    "coda:release": "coda release src/pack.ts 49 -n \"Portfolio polish and release\""
+    "coda:release": "coda release src/pack.ts"
   },
   "author": "Rami Isaac <raisaac@icloud.com>",
   "license": "MIT",
