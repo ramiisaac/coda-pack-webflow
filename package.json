@@ -1,6 +1,6 @@
 {
   "name": "coda-webflow",
-  "version": "1.0.0",
+  "version": "49.0.0",
   "description": "A Coda Pack for Webflow API integration",
   "main": "src/pack.ts",
   "scripts": {
