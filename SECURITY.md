@@ -10,7 +10,7 @@ If you believe you have found a security vulnerability in this pack, do not open
 
 Preferred channel:
 
-- Email the maintainer at `raisaac@icloud.com` with subject line `SECURITY: <pack name>`.
+- Email the maintainer at `raisaac@icloud.com` with subject line `SECURITY: Webflow`.
 
 Alternatively, use GitHub's private vulnerability reporting on this repository (Security tab, "Report a vulnerability").
 
